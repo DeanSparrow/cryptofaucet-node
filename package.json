@@ -3,11 +3,13 @@
     "version": "0.1.1",
     "private": true,
     "dependencies": {
-        "express": "3.x",
-        "jade": "*",
         "bitcoin": "*",
+        "bitcoin-core": "^4.1.0",
+        "express": "3.x",
         "iz": "*",
-        "nedb":"*",
-        "querystring":"*"
+        "jade": "*",
+        "nedb": "*",
+        "parser": "^0.1.4",
+        "querystring": "*"
     }
 }

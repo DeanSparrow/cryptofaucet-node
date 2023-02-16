@@ -51,7 +51,7 @@ exports.dashboard = function(req,res){
 			,address_data:null
 		};
 
-	if (iz.required(req.body.password)) {
+	if (!(req.body.password)) {
 		console.log('Logging in',req.body.password)
 		if (req.body.password == config.dashboard.password) {
 			console.log('LOGGED IN!');
@@ -90,32 +90,32 @@ exports.dashboard = function(req,res){
 
 		//wallet daemon info
 		arg.wallet = {
-			balance: (iz.number(data.wallet.balance) ? data.wallet.balance+' '+config.symbol : data.wallet.balance)
+			balance: (!(data.wallet.balance) ? data.wallet.balance+' '+config.symbol : data.wallet.balance)
 			,block_count: data.wallet.block_count
 			,difficulty: data.wallet.difficulty
 			,connections: data.wallet.connections
 			,deposit_address: data.wallet.deposit_address
 		};
 
-		if (iz.required(req.body.force_run)) {
+		if (!(req.body.force_run)) {
 			console.log("FORCING PROCESSOR TO RUN!");
 			processor.force();
 			arg.processor_success = 'Processor will run shortly. <a href="'+config.dashboard.path+'">Update dashboard</a>';
 		}
 
 		//user requesting an address report
-		if (iz.required(req.body.address)) {
+		if (!(req.body.address)) {
 			db.users.findOne({key:req.body.address},function(err,user){
 				if (err) {
 					console.log("Error fetching address for dashboard report",req.body.address,err);
 					arg.processor_error += 'Address not found';
-				} else if (!user || iz.empty(user)) {
+				} else if (!user || !(user)) {
 					arg.processor_error += 'Address not found';
 				} else {
 					arg.address_data = {
 						address: req.body.address
 						,counter: user.counter
-						,payouts: (iz.required(user.payouts) ? user.payouts : [])
+						,payouts: (!(user.payouts) ? user.payouts : [])
 					}
 				}
 
@@ -149,8 +149,8 @@ exports.index = function(req, res){
 exports.submit = function(req, res){
 	
 	var address_regex = /^[a-zA-Z0-9]{20,40}$/ //This regex is very basic. We just see if input is alphanumeric between 20 and 40 chars before passing through to RPC for further inspection
-		,address_ok = (iz.required(req.body.address) && iz.string(req.body.address) && address_regex.test(req.body.address))
-		,captcha_ok = (iz.required(req.cookies.captcha) && iz.required(req.body[req.cookies.captcha]) && iz.string(req.body[req.cookies.captcha]) && req.body[req.cookies.captcha] === "1");
+		,address_ok = (!(req.body.address) && !(req.body.address) && address_regex.test(req.body.address))
+		,captcha_ok = (!(req.cookies.captcha) && !(req.body[req.cookies.captcha]) && !(req.body[req.cookies.captcha]) && req.body[req.cookies.captcha] === "1");
 
 	if (processor.isQueued(req.ip,req.body.address)) {
 
@@ -181,7 +181,7 @@ exports.submit = function(req, res){
 						//Error
 						console.log(err);
 						_failure(req,res,'Unable to validate address');
-					} else if (!iz.required(response.isvalid) || response.isvalid === false) {
+					} else if (!!(response.isvalid) || response.isvalid === false) {
 						//Invalid
 						_failure(req,res,'Please enter a valid address');
 					} else {
@@ -343,7 +343,7 @@ function _formatNextRun(dt) {
 	Returns true if user is admin
 */
 function _isAdmin(req) {
-	return (iz.required(req.session.dashboard_allowed) && req.session.dashboard_allowed === true);
+	return (!(req.session.dashboard_allowed) && req.session.dashboard_allowed === true);
 }
 
 /*
@@ -380,7 +380,7 @@ function _normalizeInterval(interval) {
 	Includes odds data when payouts are given as an array
 */
 function _normalizePayout(payout) {
-	if (payout instanceof Array && !iz.empty(payout)) {
+	if (payout instanceof Array && !!(payout)) {
 		// we calculate the odds and reset the array to [{payout,odds}]
 		var total=0,result=[],p=0,i='';
 		for(i=0;i<payout.length;i++) {
@@ -393,13 +393,13 @@ function _normalizePayout(payout) {
 			p=payout[i];
 			if (p instanceof Array && p.length == 2) {
 				var odds = (total > 0 ? (p[1] / total)*100 : 0);
-				result.push({payout:p[0],odds:iz.decimal(odds) ? odds.toFixed(2) : odds});
+				result.push({payout:p[0],odds:!(odds) ? odds.toFixed(2) : odds});
 			}
 		}
 		return result;
-	} else if (iz.number(payout)) {
+	} else if (!(payout)) {
 		return payout;
-	} else if (payout && iz.required(payout.minimum) && iz.required(payout.maximum)) {
+	} else if (payout && !(payout.minimum) && !(payout.maximum)) {
 		return payout;
 	}
 	return 0;
@@ -465,7 +465,7 @@ function _vars(req,res,page,additional) {
 	conf = _extend(true,conf,config);
 
 	/*global for page*/
-	conf = _extend(true,conf,iz.required(config.pages[page]) ? config.pages[page] : {});
+	conf = _extend(true,conf,!(config.pages[page]) ? config.pages[page] : {});
 
 	/* request vars*/
 	conf = _extend(true,conf,req_config);

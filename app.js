@@ -20,7 +20,6 @@
 
 //global
 config = require('./config')
-,iz = require('iz')
 ,bitcoin = require('bitcoin')
 ,client = new bitcoin.Client(config.rpc)
 ,db = require('./db')(config.database)
@@ -35,7 +34,7 @@ var express = require('express')
 
 
 //Express Configuration
-app.set('port', process.env.PORT || 80);
+app.set('port', process.env.PORT || 3030);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.logger('dev'));

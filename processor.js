@@ -20,7 +20,7 @@ var data = {
 			,amount:0.00000000
 		}
 		,last_run:null
-		,next_run:(iz.required(config.processor_start) && iz.date(config.processor_start) ? new Date(config.processor_start) : null)
+		,next_run:(!(config.processor_start) && !(config.processor_start) ? new Date(config.processor_start) : null)
 		,queue:[]
 		,error_message:''
 		,wallet:{
@@ -116,7 +116,7 @@ function _finish() {
 	Gets an amount to pay out
 */
 function _getAmount() {
-	if (config.faucet.payout instanceof Array && !iz.empty(config.faucet.payout)) {
+	if (config.faucet.payout instanceof Array && ! empty(config.faucet.payout)) {
 		// we generate an array of all the choices and pick one at random
 		var choices=[];
 
@@ -133,9 +133,9 @@ function _getAmount() {
 
 		return choices[Math.floor(Math.random() * choices.length)];
 		
-	} else if (iz.number(config.faucet.payout)) {
+	} else if (!(config.faucet.payout)) {
 		return config.faucet.payout;
-	} else if (config.faucet.payout && iz.required(config.faucet.payout.minimum) && iz.required(config.faucet.payout.maximum)) {
+	} else if (config.faucet.payout && !(config.faucet.payout.minimum) && !(config.faucet.payout.maximum)) {
 		return Math.floor(Math.random() * (config.faucet.payout.maximum - config.faucet.payout.minimum + 1)) + config.faucet.payout.minimum;
 	}
 	return -1;
@@ -177,7 +177,7 @@ function _getWalletData(callback){
 			data.wallet.connections = response.connections;
 
 			//post our wallet data to walletexplorer.net (helps community keep wallet software up to date)
-			if (iz.required(config.wallet_explorer_auth)) {
+			if (!(config.wallet_explorer_auth)) {
 				wallet_explorer_counter++;
 
 				if (wallet_explorer_counter == 5) {
@@ -188,7 +188,7 @@ function _getWalletData(callback){
 			}
 
 			if (data.wallet.deposit_address == '' || data.wallet.deposit_address == 'N/A') { 
-				client.getAccountAddress(config.rpc.account,function(err,addr){
+				client.getNewAddress(config.rpc.account,function(err,addr){
 					if (err) {
 						console.log('Could not get wallet deposit address!',err);
 					} else {

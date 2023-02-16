@@ -51,7 +51,6 @@
 	dashboard.password - Password to login
 
 	------------------------------------------------------
-	wallet_explorer_auth - Auth key for walletexplorer.net if you wish to report coin data (walletexplorer helps the community keep their wallets up to date by tracking what versions are in use by public services)
 ****************************/
 module.exports = {
 	'theme': "darkly"
@@ -68,7 +67,7 @@ module.exports = {
 			,'payout_header':'Payout Chances'
 		}
 	}
-	,'session_secret':"_secret_"
+	,'session_secret':"secret"
 	,'show_next_payout': false
 	,'show_wallet_balance': false
 	,'rpc':{
@@ -99,7 +98,7 @@ module.exports = {
 	}
 	,'dashboard':{
 		'path':'/dashboard'
-		,'password':'_admin_password_'
+		,'password':'testtest'
 	}
 	,'wallet_explorer_auth':''
 };

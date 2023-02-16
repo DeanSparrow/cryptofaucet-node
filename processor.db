@@ -1,0 +1,5 @@
+{"key":"data","counters":{"run":1,"sent":0,"amount":0},"last_run":{"$$date":1676583349612},"next_run":{"$$date":1676626549612},"queue":[],"error_message":"","wallet":{"balance":"10651.3400272 DGC","block_count":1105908,"difficulty":8.308206112540633,"connections":9,"deposit_address":yBVHJj8oiZVQzbHvhJtoJ2sNCqMQR3ad6o},"_id":"hmdtbVManYGpetAc"}
+{"$$indexCreated":{"fieldName":"key","unique":true}}
+{"$$indexCreated":{"fieldName":"key","unique":true}}
+{"$$indexCreated":{"fieldName":"key","unique":true}}
+{"$$indexCreated":{"fieldName":"key","unique":true}}
